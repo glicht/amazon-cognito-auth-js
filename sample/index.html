@@ -196,16 +196,15 @@
 		};
 		var auth = new AWSCognito.CognitoIdentityServiceProvider.CognitoAuth(authData);
 		auth.userhandler = {
-			onSuccess: <TODO: your onSuccess callback here>,
-			onFailure: <TODO: your onFailure callback here>
-			/** E.g.
+			//onSuccess: <TODO: your onSuccess callback here>,
+			//onFailure: <TODO: your onFailure callback here>
 			onSuccess: function(result) {
 				alert("Sign in success");
 				showSignedIn(result);
 			},
 			onFailure: function(err) {
 				alert("Error!" + err);
-			}*/
+			}
 		};
 		// The default response_type is "token", uncomment the next line will make it be "code".
 		// auth.useCodeGrantFlow();
