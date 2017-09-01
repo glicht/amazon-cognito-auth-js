@@ -22,8 +22,8 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="stylesheets/styleSheetStart.css">
 	<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-	<script src="dist/aws-cognito-sdk.js"></script>
-	<script src="dist/amazon-cognito-auth.min.js"></script>
+	<script src="https://rawgit.com/aws/amazon-cognito-auth-js/master/dist/aws-cognito-sdk.min.js"></script>
+	<script src="https://rawgit.com/aws/amazon-cognito-auth-js/master/dist/amazon-cognito-auth.min.js"></script>
 </head>
 
 <body  onload="onLoad()">
@@ -188,11 +188,11 @@
   // Initialize a cognito auth object.
 	function initCognitoSDK() {
 		var authData = {
-			ClientId : '<TODO: your app client ID here>', // Your client id here
-			AppWebDomain : '<TODO: your app web domain here>',
-			TokenScopesArray : '<TODO: your scope array here>',
-			RedirectUriSignIn : '<TODO: your redirect url when signed in here>',
-			RedirectUriSignOut : '<TODO: your redirect url when signed out here>'
+			ClientId : '476a8lcmtkt9944dp0a8caqt2o', // Your client id here
+			AppWebDomain : 'auth-js-sample.auth.us-east-1.amazoncognito.com',
+			TokenScopesArray : '['openid', 'profile']',
+			RedirectUriSignIn : 'https://rawgit.com/guylichtman/amazon-cognito-auth-js/master/sample/index.html',
+			RedirectUriSignOut : 'https://rawgit.com/guylichtman/amazon-cognito-auth-js/master/sample/index.html'
 		};
 		var auth = new AWSCognito.CognitoIdentityServiceProvider.CognitoAuth(authData);
 		auth.userhandler = {
