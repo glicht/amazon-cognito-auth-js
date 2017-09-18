@@ -803,6 +803,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * which will be launched after authentication as signed in.
 	   * @param {string} data.RedirectUriSignOut Required:
 	   * The redirect Uri, which will be launched when signed out.
+	    * @param {string} data.IdentityProvider Optional: Pre-selected identity provider (this allows to
+	    * automatically trigger social provider authentication flow).
 	   * @param {nodeCallback<CognitoAuthSession>} Optional: userhandler Called on success or error.
 	   */
 	  function CognitoAuth(data) {
@@ -813,7 +815,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        AppWebDomain = _ref.AppWebDomain,
 	        TokenScopesArray = _ref.TokenScopesArray,
 	        RedirectUriSignIn = _ref.RedirectUriSignIn,
-	        RedirectUriSignOut = _ref.RedirectUriSignOut;
+	        RedirectUriSignOut = _ref.RedirectUriSignOut,
+	        IdentityProvider = _ref.IdentityProvider;
 
 	    if (data == null || !ClientId || !AppWebDomain || !RedirectUriSignIn || !RedirectUriSignOut) {
 	      throw new Error(this.getCognitoConstants().PARAMETERERROR);
@@ -828,6 +831,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var tokenScopes = new _CognitoTokenScopes2.default(this.TokenScopesArray);
 	    this.RedirectUriSignIn = RedirectUriSignIn;
 	    this.RedirectUriSignOut = RedirectUriSignOut;
+	    this.IdentityProvider = IdentityProvider;
 	    this.signInUserSession = new _CognitoAuthSession2.default();
 	    this.responseType = this.getCognitoConstants().TOKEN;
 	    this.storage = new _StorageHelper2.default().getStorage();
@@ -849,6 +853,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      DOMAIN_QUERY_PARAM_REDIRECT_URI: 'redirect_uri',
 	      DOMAIN_QUERY_PARAM_SIGNOUT_URI: 'logout_uri',
 	      DOMAIN_QUERY_PARAM_RESPONSE_TYPE: 'response_type',
+	      DOMAIN_QUERY_PARAM_IDENTITY_PROVIDER: 'identity_provider',
 	      CLIENT_ID: 'client_id',
 	      STATE: 'state',
 	      SCOPE: 'scope',
@@ -1476,9 +1481,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  CognitoAuth.prototype.getFQDNSignIn = function getFQDNSignIn() {
 	    var state = this.generateRandomString(this.getCognitoConstants().STATELENGTH, this.getCognitoConstants().STATEORIGINSTRING);
+	    var identityProviderParam = this.IdentityProvider ? this.getCognitoConstants().AMPERSAND.concat(this.getCognitoConstants().DOMAIN_QUERY_PARAM_IDENTITY_PROVIDER, this.getCognitoConstants().EQUALSIGN, this.IdentityProvider) : '';
 	    var tokenScopesString = this.getSpaceSeperatedScopeString();
 	    // Build the complete web domain to launch the login screen
-	    var uri = this.getCognitoConstants().DOMAIN_SCHEME.concat(this.getCognitoConstants().COLONDOUBLESLASH, this.getAppWebDomain(), this.getCognitoConstants().SLASH, this.getCognitoConstants().DOMAIN_PATH_SIGNIN, this.getCognitoConstants().QUESTIONMARK, this.getCognitoConstants().DOMAIN_QUERY_PARAM_REDIRECT_URI, this.getCognitoConstants().EQUALSIGN, encodeURIComponent(this.RedirectUriSignIn), this.getCognitoConstants().AMPERSAND, this.getCognitoConstants().DOMAIN_QUERY_PARAM_RESPONSE_TYPE, this.getCognitoConstants().EQUALSIGN, this.responseType, this.getCognitoConstants().AMPERSAND, this.getCognitoConstants().CLIENT_ID, this.getCognitoConstants().EQUALSIGN, this.getClientId(), this.getCognitoConstants().AMPERSAND, this.getCognitoConstants().STATE, this.getCognitoConstants().EQUALSIGN, state, this.getCognitoConstants().AMPERSAND, this.getCognitoConstants().SCOPE, this.getCognitoConstants().EQUALSIGN, tokenScopesString);
+	    var uri = this.getCognitoConstants().DOMAIN_SCHEME.concat(this.getCognitoConstants().COLONDOUBLESLASH, this.getAppWebDomain(), this.getCognitoConstants().SLASH, this.getCognitoConstants().DOMAIN_PATH_SIGNIN, this.getCognitoConstants().QUESTIONMARK, this.getCognitoConstants().DOMAIN_QUERY_PARAM_REDIRECT_URI, this.getCognitoConstants().EQUALSIGN, encodeURIComponent(this.RedirectUriSignIn), this.getCognitoConstants().AMPERSAND, this.getCognitoConstants().DOMAIN_QUERY_PARAM_RESPONSE_TYPE, this.getCognitoConstants().EQUALSIGN, this.responseType, this.getCognitoConstants().AMPERSAND, this.getCognitoConstants().CLIENT_ID, this.getCognitoConstants().EQUALSIGN, this.getClientId(), this.getCognitoConstants().AMPERSAND, this.getCognitoConstants().STATE, this.getCognitoConstants().EQUALSIGN, state, this.getCognitoConstants().AMPERSAND, this.getCognitoConstants().SCOPE, this.getCognitoConstants().EQUALSIGN, tokenScopesString, identityProviderParam);
 	    console.log('--uri: '.concat(uri));
 	    return uri;
 	  };
